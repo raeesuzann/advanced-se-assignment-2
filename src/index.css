@@ -1,0 +1,680 @@
+/* Define CSS variables for both dark and light themes, including colors for background, surface, text, accents, and shadows, as well as a font family */
+:root {
+  color-scheme: dark;
+  --bg: #07111f;
+  --bg-secondary: #112540;
+  --surface: rgba(8, 20, 37, 0.8);
+  --surface-strong: rgba(12, 28, 49, 0.96);
+  --surface-soft: rgba(159, 218, 255, 0.08);
+  --border: rgba(159, 218, 255, 0.18);
+  --text: #f3f8ff;
+  --muted: #a6bdd5;
+  --accent: #ff914d;
+  --accent-2: #58d6ff;
+  --accent-3: #9bf0c6;
+  --accent-shadow: rgba(88, 214, 255, 0.24);
+  --shadow: 0 36px 100px rgba(0, 0, 0, 0.4);
+  --font-sans: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+/* Define CSS variables for the light theme, overriding the dark theme variables with lighter colors for background, surface, text, accents, and shadows */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5ead8;
+  --bg-secondary: #f6d3a7;
+  --surface: rgba(255, 255, 255, 0.82);
+  --surface-strong: rgba(255, 255, 255, 0.98);
+  --surface-soft: rgba(21, 55, 98, 0.06);
+  --border: rgba(21, 55, 98, 0.12);
+  --text: #11253f;
+  --muted: #5b6f85;
+  --accent: #c45a1c;
+  --accent-2: #0b84af;
+  --accent-3: #177867;
+  --accent-shadow: rgba(11, 132, 175, 0.14);
+  --shadow: 0 32px 84px rgba(93, 66, 38, 0.16);
+}
+
+/* Apply a global box-sizing of border-box to all elements, ensuring that padding and borders are included in the total width and height of elements for easier layout management */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+/* Set the body to have no margin, use the defined sans-serif font, and apply the text color and background with gradients for a visually appealing design. Also, add transitions for smooth changes in background and text color when switching themes */
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(88, 214, 255, 0.18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(255, 145, 77, 0.18), transparent 28%),
+    linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+  transition:
+    background 0.35s ease,
+    color 0.35s ease;
+}
+
+/* Inherit font properties for buttons and select elements, and remove default borders and set cursor to pointer for buttons to enhance the user interface */
+button,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+button:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+/* Define styles for the main screen container, including positioning, minimum height, flexbox layout for centering content, padding, and overflow handling. Also, set isolation to isolate to create a new stacking context for child elements */
+.screen {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Define a fade-in animation for elements with the class "fade-in", which animates the opacity and vertical position to create a smooth entrance effect */
+.fade-in {
+  animation: fade-up 0.7s ease;
+}
+
+/* Define styles for ambient elements, which are positioned absolutely with a negative z-index to appear behind other content. They have a circular shape, a blur filter for a soft glow effect, reduced opacity, and an animation that creates a drifting motion. Specific styles for two ambient elements (ambient-a and ambient-b) set their position, size, background color, and animation delay for a dynamic visual effect */
+.ambient {
+  position: absolute;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(22px);
+  opacity: 0.6;
+  animation: drift 14s ease-in-out infinite;
+}
+
+/* Specific styles for the first ambient element, including its position, size, background color, and opacity to create a soft blue glow effect */
+.ambient-a {
+  top: -72px;
+  left: -48px;
+  width: 360px;
+  height: 360px;
+  background: rgba(88, 214, 255, 0.28);
+}
+
+/* Specific styles for the second ambient element, including its position, size, background color, and animation delay to create a soft orange glow effect that drifts at a different pace than the first ambient element */
+.ambient-b {
+  right: -36px;
+  bottom: -80px;
+  width: 280px;
+  height: 280px;
+  background: rgba(255, 145, 77, 0.26);
+  animation-delay: -6s;
+}
+
+/* Define a card component with a border, rounded corners, background color, blur effect for a frosted glass appearance, and a shadow for depth */
+.card {
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  background: var(--surface);
+  backdrop-filter: blur(22px);
+  box-shadow: var(--shadow);
+}
+
+/* Define styles for the menu and app shells, which set a maximum width and responsive padding to ensure the content is well-contained and visually balanced on different screen sizes */
+.menu-shell,
+.app-shell {
+  width: min(1120px, 100%);
+  padding: clamp(24px, 4vw, 40px);
+}
+
+/* Define styles for the top bar of the menu and the header of the app, using flexbox to align items and create space between them, with a gap for visual separation */
+.menu-topbar,
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Define styles for the eyebrow element, which is an inline-flex container with centered items, a gap between them, padding, rounded corners, a background color with transparency, accent color for text, letter spacing for a stylized look, uppercase text transformation, and specific font size and weight for emphasis */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 145, 77, 0.14);
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* Define styles for the main heading (h1), including margin, responsive font size using clamp, line height for tight spacing, and negative letter spacing for a condensed appearance */
+h1 {
+  margin: 16px 0 0;
+  font-size: clamp(3.2rem, 10vw, 6rem);
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+}
+
+/* Define styles for the lead paragraph, including margin, maximum width for optimal readability, muted text color, increased font size for emphasis, and line height for comfortable reading */
+.lede {
+  margin: 18px 0 0;
+  max-width: 40ch;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+/* Define styles for a ghost button, which has padding, fully rounded corners, a soft background color, a border with the defined border color, text color from the theme, and transitions for transform, border color, and background for interactive feedback on hover */
+.ghost-button {
+  padding: 14px 18px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+/* Define hover styles for the ghost button, which include a slight upward movement (translateY), a change in border color to a more vibrant accent color with transparency, and a subtle background color change to enhance the interactive feel of the button */
+.ghost-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(88, 214, 255, 0.45);
+  background: rgba(88, 214, 255, 0.1);
+}
+
+/* Define styles for the menu and game layouts, which use CSS grid to create a structured layout with a gap between grid items and a top margin for spacing. The menu layout has two columns with specific width ratios, while the game layout also has two columns but with different width ratios to accommodate the game board and HUD panel */
+.menu-layout,
+.game-layout {
+  display: grid;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+/* Define specific grid column configurations for the menu layout, where the first column takes up slightly more space than the second column, and both columns have a minimum width to ensure content is displayed properly. The layout also ensures that items are stretched to fill the available space vertically */
+.menu-layout {
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  align-items: stretch;
+}
+
+/* Define styles for the menu copy section, which uses flexbox to arrange its content in a column and centers it vertically for a balanced and visually appealing presentation */
+.menu-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Define styles for the note grid, which uses CSS grid to create a two-column layout with a gap between items and a top margin for spacing. The grid allows for responsive arrangement of note cards or informational sections within the menu or game interface */
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+/* Define styles for note cards, fields, HUD panels, and board panels, which all share common styles such as a border with the defined border color, rounded corners for a softer appearance, and a background color with transparency for a frosted glass effect. These styles create a cohesive visual design across different components of the interface */
+.note-card,
+.field,
+.hud-panel,
+.board-panel {
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--surface-soft);
+}
+
+.note-card {
+  padding: 18px;
+}
+
+.note-card p,
+.field-hint,
+.status-detail,
+.board-caption {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Define styles for various labels and kickers, which are displayed as block elements with uppercase text transformation, letter spacing for a stylized look, and specific font size and weight for emphasis. The note kicker and mode label have a specific accent color to differentiate them from other labels */
+.note-kicker,
+.field-label,
+.score-label,
+.mode-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.note-kicker,
+.mode-label {
+  color: var(--accent-2);
+}
+
+/* Define styles for the menu actions section, which uses flexbox to arrange its content in a column with a gap between items and centers it vertically for a visually appealing layout of action buttons or links within the menu interface */
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.mode-card {
+  padding: 22px;
+  border-radius: 26px;
+  text-align: left;
+  color: var(--text);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent),
+    var(--surface-strong);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Define hover styles for the mode card, which include a more pronounced upward movement (translateY), a change in border color to a vibrant accent color with transparency, and an enhanced box shadow to create a more dynamic and interactive feel when the user hovers over the card */
+.mode-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(88, 214, 255, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 22px 42px rgba(0, 0, 0, 0.16);
+}
+
+.mode-primary {
+  background:
+    linear-gradient(135deg, rgba(88, 214, 255, 0.22), transparent 62%),
+    var(--surface-strong);
+}
+
+.mode-secondary {
+  background:
+    linear-gradient(135deg, rgba(255, 145, 77, 0.2), transparent 62%),
+    var(--surface-strong);
+}
+
+.mode-card strong {
+  display: block;
+  margin: 8px 0 10px;
+  font-size: 1.4rem;
+}
+
+.mode-card small {
+  display: block;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Define styles for form fields, including padding for the field container, margin and color for field labels, styles for select controls with custom background and appearance, and styles for field hints to provide additional information or guidance to users when filling out forms within the interface */
+.field {
+  padding: 18px;
+}
+
+.field-label {
+  margin-bottom: 12px;
+  color: var(--muted);
+}
+
+.select-control {
+  width: 100%;
+  padding: 14px 42px 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  background:
+    linear-gradient(45deg, transparent 50%, var(--accent-2) 50%),
+    linear-gradient(135deg, var(--accent-2) 50%, transparent 50%),
+    var(--surface-strong);
+  background-position:
+    calc(100% - 20px) calc(50% - 2px),
+    calc(100% - 14px) calc(50% - 2px),
+    0 0;
+  background-size:
+    6px 6px,
+    6px 6px,
+    auto;
+  background-repeat: no-repeat;
+  appearance: none;
+}
+
+.field-hint {
+  display: block;
+  margin-top: 12px;
+}
+
+/* Define styles for the game layout, which uses CSS grid to create a two-column layout with specific width ratios for the HUD panel and board panel. The layout also ensures that items are stretched to fill the available space vertically, creating a balanced and visually appealing interface for the game */
+.game-layout {
+  grid-template-columns: minmax(300px, 0.9fr) minmax(320px, 1.1fr);
+  align-items: stretch;
+}
+
+/* Define styles for the HUD panel and board panel, which share common padding for consistent spacing. The HUD panel uses flexbox to arrange its content in a column, while the board panel centers its content both vertically and horizontally for an optimal gaming experience */
+.hud-panel,
+.board-panel {
+  padding: 24px;
+}
+
+.hud-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Define styles for status badges, which use flexbox to arrange badges in a row with wrapping and a gap between them. Each badge is styled with padding, rounded corners, a border, background color, and font size for a visually appealing display of game status or player information. The accent badge variant uses specific colors to differentiate it from regular badges */
+.status-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  font-size: 0.88rem;
+}
+
+.badge-accent {
+  border-color: rgba(255, 145, 77, 0.3);
+  background: rgba(255, 145, 77, 0.12);
+  color: var(--accent);
+}
+
+/* Define styles for the status block, which includes a margin for spacing, and styles for the status title and detail text. The status title uses a responsive font size with clamp, tight line height, and negative letter spacing for a bold and condensed appearance, while the status detail has a top margin and a maximum width for optimal readability */
+.status-block {
+  margin: 20px 0 24px;
+}
+
+.status-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+}
+
+.status-detail {
+  margin-top: 12px;
+  max-width: 34ch;
+}
+
+/* Define styles for the scoreboard, which uses CSS grid to create a three-column layout with a gap between items. Each score tile is styled with padding, rounded corners, a border, and a background color for a visually appealing display of player scores or game statistics. The score label and value are styled for clarity, and specific color variants are defined for different score types (X, O, and draw) to differentiate them visually */
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.score-tile {
+  padding: 18px 16px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+}
+
+.score-label {
+  color: var(--muted);
+}
+
+.score-value {
+  display: block;
+  margin-top: 14px;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.score-tile-x .score-value {
+  color: var(--accent-2);
+}
+
+.score-tile-o .score-value {
+  color: var(--accent);
+}
+
+.score-tile-draw .score-value {
+  color: var(--accent-3);
+}
+
+/* Define styles for the controls section, which uses flexbox to arrange action buttons in a row with wrapping and a gap between them. Each action button is styled with padding, rounded corners, and transitions for transform, box shadow, and border color to create an interactive and visually appealing set of controls for the game interface. Primary and secondary button variants are defined with specific colors and backgrounds to differentiate their importance or function */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Define styles for action buttons, which include padding for comfortable click areas, rounded corners for a softer appearance, and transitions for transform, box shadow, and border color to enhance interactivity. The primary action button uses a vibrant gradient background and a shadow for emphasis, while the secondary action button has a more subdued background and a border to differentiate it from the primary button */
+.action-button {
+  flex: 1 1 180px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+}
+
+.action-button-primary {
+  color: #08111f;
+  background: linear-gradient(135deg, var(--accent-2), #a4ebff);
+  box-shadow: 0 18px 30px var(--accent-shadow);
+}
+
+.action-button-secondary {
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+}
+
+.board-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-frame {
+  width: min(100%, 500px);
+  padding: clamp(16px, 4vw, 24px);
+  border-radius: 30px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(135deg, rgba(255, 145, 77, 0.12), transparent 48%),
+    linear-gradient(315deg, rgba(88, 214, 255, 0.14), transparent 52%),
+    var(--surface-strong);
+}
+
+/* Define styles for the game board, which uses CSS grid to create a three-column layout with a gap between squares. Each square is styled with an aspect ratio of 1:1 for a perfect square shape, a border, rounded corners, a background with gradients for visual depth, and specific font styles for displaying X and O marks. Hover effects are defined for interactive feedback, and disabled styles are applied to prevent interaction with occupied squares. Winning squares have distinct styles to highlight the winning combination */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Define styles for individual squares on the game board, which include an aspect ratio of 1:1 to maintain a perfect square shape, a border with the defined border color, rounded corners for a softer appearance, and a background with gradients to create visual depth. The squares also have specific font styles for displaying X and O marks, and transitions for transform, border color, box shadow, and background to enhance interactivity when hovering or when a square is occupied or part of a winning combination */
+.square {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent),
+    var(--surface);
+  color: var(--text);
+  font-size: clamp(2.75rem, 10vw, 4rem);
+  font-weight: 800;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.square:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: rgba(88, 214, 255, 0.34);
+  box-shadow: 0 18px 28px rgba(0, 0, 0, 0.16);
+}
+
+.square:disabled {
+  cursor: default;
+}
+
+.square.x {
+  color: var(--accent-2);
+}
+
+.square.o {
+  color: var(--accent);
+}
+
+.square.win {
+  color: #07111f;
+  background: linear-gradient(135deg, var(--accent-3), var(--accent-2));
+  border-color: transparent;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.square-placeholder {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(166, 189, 213, 0.55);
+}
+
+.board-caption {
+  max-width: 30ch;
+  margin-top: 18px;
+  text-align: center;
+}
+
+/* Define a fade-in animation for elements with the class "fade-in", which animates the opacity and vertical position to create a smooth entrance effect */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Define a drifting animation for ambient elements, which creates a smooth up-and-down motion by animating the vertical translation and scaling of the element. The animation starts and ends with the element in its original position and scale, while at the midpoint it moves down slightly and scales up for a subtle floating effect */
+@keyframes drift {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(0, 18px, 0) scale(1.06);
+  }
+}
+
+/* Define responsive styles for medium screens (max-width: 920px), which include adjustments to padding, layout of the top bar and header, grid configurations for menu and game layouts, and note grid to ensure a user-friendly experience on tablets and smaller laptops. These styles maintain the overall design aesthetic while optimizing the interface for different screen sizes */
+@media (max-width: 920px) {
+  .screen {
+    padding: 20px;
+  }
+
+  .menu-topbar,
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu-layout,
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .note-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .board-frame {
+    width: min(100%, 440px);
+  }
+}
+
+/* Define responsive styles for smaller screens (max-width: 640px), which include adjustments to padding, border-radius, layout of controls, and styling of the board and squares to ensure a user-friendly experience on mobile devices. These styles enhance the visual appeal and usability of the interface on smaller screens while maintaining the overall design aesthetic */
+@media (max-width: 640px) {
+  .screen {
+    padding: 16px;
+  }
+
+  .menu-shell,
+  .app-shell,
+  .hud-panel,
+  .board-panel {
+    border-radius: 24px;
+  }
+
+  .menu-shell,
+  .app-shell {
+    padding: 18px;
+  }
+
+  .hud-panel,
+  .board-panel {
+    padding: 18px;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+
+  .board {
+    gap: 10px;
+  }
+
+  .square {
+    border-radius: 18px;
+  }
+}
+
+/* Reduce motion for users who prefer it by minimizing animation and transition durations, and disabling smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
