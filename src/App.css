@@ -17,6 +17,7 @@
   }
 }
 
+/* Global styles */
 .hero {
   position: relative;
 
@@ -27,12 +28,14 @@
     margin: 0 auto;
   }
 
+  /* The 3D effect is achieved by layering the framework and vite logos on top of the base logo, and applying different perspective and rotation transformations to each layer. */
   .base {
     width: 170px;
     position: relative;
     z-index: 0;
   }
 
+  /* CAN CHANGE LATER: The framework logo is positioned above the base logo, with a higher z-index, and is transformed to create a 3D effect. The perspective property gives the illusion of depth, while the rotateZ, rotateX, and rotateY properties rotate the logo in 3D space. The scale property is used to adjust the size of the logo. */
   .framework,
   .vite {
     position: absolute;
@@ -42,20 +45,20 @@
     z-index: 1;
     top: 34px;
     height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
   }
 
+  /* CAN CHANGE LATER: The vite logo is positioned above the framework logo, with the highest z-index, and is transformed in a similar way to create a more pronounced 3D effect. The top property is adjusted to position the logo correctly in relation to the other layers. */
   .vite {
     z-index: 0;
     top: 107px;
     height: 26px;
     width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
   }
 }
 
+/* The #center element is styled as a flex container with a column layout, centered content, and a gap between items. It also has responsive padding and gap adjustments for smaller screens. */
 #center {
   display: flex;
   flex-direction: column;
@@ -70,25 +73,29 @@
   }
 }
 
+/* The #next-steps element is styled as a flex container with a border at the top and left-aligned text. It contains two child divs that are styled to take up equal space and have padding. The layout of the #next-steps element is adjusted for smaller screens to stack the child divs vertically and center the text. */
 #next-steps {
   display: flex;
   border-top: 1px solid var(--border);
   text-align: left;
 
-  & > div {
+  &>div {
     flex: 1 1 0;
     padding: 32px;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
   }
 
+  /* The .icon class is used to style any icons within the #next-steps section, giving them a specific size and margin. This ensures that the icons are visually balanced with the text and other elements in the section. */
   .icon {
     margin-bottom: 16px;
     width: 22px;
     height: 22px;
   }
 
+  /* The #next-steps element is styled as a flex container with a border at the top and left-aligned text. It contains two child divs that are styled to take up equal space and have padding. The layout of the #next-steps element is adjusted for smaller screens to stack the child divs vertically and center the text. */
   @media (max-width: 1024px) {
     flex-direction: column;
     text-align: center;
@@ -115,6 +122,7 @@
     height: 18px;
   }
 
+  /* The a elements within the #next-steps ul are styled as buttons with a background color, padding, and border-radius. They also have a hover effect that adds a box shadow for visual feedback. The .button-icon class is used to style any icons within the buttons, giving them a specific size. The layout of the list is adjusted for smaller screens to wrap the items and center them. */
   a {
     color: var(--text-h);
     font-size: 16px;
@@ -136,6 +144,7 @@
     }
   }
 
+  /* The #next-steps ul element is styled as a flex container with a gap between items, and the list-style and padding are removed. The a elements within the list are styled as buttons with a background color, padding, and border-radius, and they have a hover effect that adds a box shadow. The .logo class is used to style any logos within the buttons, and the .button-icon class is used to style any icons within the buttons. The layout of the list is adjusted for smaller screens to wrap the items and center them. */
   @media (max-width: 1024px) {
     margin-top: 20px;
     flex-wrap: wrap;
@@ -153,14 +162,17 @@
   }
 }
 
+/* The #spacer element is styled to create a visual separation between sections of the page. It has a fixed height and a border at the top to create a dividing line. The height is adjusted for smaller screens to maintain a balanced layout. */
 #spacer {
   height: 88px;
   border-top: 1px solid var(--border);
+
   @media (max-width: 1024px) {
     height: 48px;
   }
 }
 
+/* The .ticks class is used to create decorative tick marks on either side of an element. It uses pseudo-elements (::before and ::after) to create the tick marks, which are styled with borders to create the desired shape. The position and size of the tick marks can be adjusted by modifying the border properties and the top property. */
 .ticks {
   position: relative;
   width: 100%;
