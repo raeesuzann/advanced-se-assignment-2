@@ -25,15 +25,23 @@ jobs:
           # Use the GitHub Run ID so every image has a unique tag
           tags: ${{ secrets.DOCKER_USERNAME }}/vite-app:${{ github.run_id }}
           
-      - name: Set Kubernetes Context
-        uses: azure/k8s-set-context@v3
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG }}
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set GKE Context
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_CLUSTER_LOCATION }}
 
       - name: Deploy to K8s
         run: |
-          # Swap the placeholder image in the YAML for the actual image we just built
           sed -i "s|image:.*|image: ${{ secrets.DOCKER_USERNAME }}/vite-app:${{ github.run_id }}|" deployment.yaml
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
+
+      - name: Verify Rollout
+        run: kubectl rollout status deployment/vite-app --timeout=120s
