@@ -2,15 +2,13 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
-# 1. Copy Yarn files specifically
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-# 2. Use yarn install with --frozen-lockfile (the Yarn version of 'npm ci')
-RUN yarn install --frozen-lockfile
+RUN npm ci
 
 # 3. Copy the rest and build
 COPY . .
-RUN yarn build
+RUN npm run build
 
 # --- Stage 2: Production Stage ---
 FROM nginx:stable-alpine
