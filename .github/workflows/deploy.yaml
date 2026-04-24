@@ -1,0 +1,39 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Use the GitHub Run ID so every image has a unique tag
+          tags: ${{ secrets.DOCKER_USERNAME }}/vite-app:${{ github.run_id }}
+          
+      - name: Set Kubernetes Context
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Deploy to K8s
+        run: |
+          # Swap the placeholder image in the YAML for the actual image we just built
+          sed -i "s|image:.*|image: ${{ secrets.DOCKER_USERNAME }}/vite-app:${{ github.run_id }}|" deployment.yaml
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
