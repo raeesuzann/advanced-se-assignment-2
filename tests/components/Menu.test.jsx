@@ -10,7 +10,6 @@ describe("Menu", () => {
 
     it("Should renders both game mode button", () => {
         render(<Menu />);
-        screen.debug()
         expect(screen.getByRole("button", {name: /local multiplayer/i })).toBeInTheDocument();
         expect(screen.getByRole("button", {name: /play vs computer/i })).toBeInTheDocument();
     })
