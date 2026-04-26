@@ -22,7 +22,6 @@ jobs:
         with:
           context: .
           push: true
-          # Use the GitHub Run ID so every image has a unique tag
           tags: ${{ secrets.DOCKER_USERNAME }}/vite-app:${{ github.run_id }}
           
       - name: Authenticate to Google Cloud
