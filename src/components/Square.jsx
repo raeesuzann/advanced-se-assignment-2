@@ -13,6 +13,8 @@ export default function Square({
             className={`square ${highlight ? "win" : ""} ${value ? value.toLowerCase() : ""}`}
             onClick={onClick}
             disabled={disabled}
+            data-testid="square"
+            data-highlight={highlight}
             aria-label={
                 value
                     ? `Square ${index + 1}, ${value}`
