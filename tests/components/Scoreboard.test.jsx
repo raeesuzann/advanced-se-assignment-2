@@ -1,26 +1,52 @@
 import { render, screen } from "@testing-library/react";
-import { expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Scoreboard from "../../src/components/Scoreboard";
 
 vi.mock("./utils/gameLogic", () => ({
     checkWinner: () => "X",
 }));
 
-it("Should updates score when X wins", () => {
-    const score = { X: 1, O: 0 };
-    render(<Scoreboard score={score} />);
+describe("Scoreboard", () => {
+    const mockScore = { X: 2, O: 1, Draw: 3 };
 
-    const cell = screen.getByText("1");
+    it("Should renders Player X score.", () => {
+        render(<Scoreboard score={mockScore} />);
 
-    expect(cell).toBeInTheDocument();
-});
+        expect(screen.getByText("Player X")).toBeInTheDocument();
+        expect(screen.getByText("2")).toBeInTheDocument();
+    });
 
+    it("Should renders Player O score.", () => {
+        render(<Scoreboard score={mockScore} />);
 
-it("Should updates score when 0 wins", () => {
-    const score = { X: 1, O: 0 };
-    render(<Scoreboard score={score} />);
-    
-    const cell = screen.getByText("0");
+        expect(screen.getByText("Player O")).toBeInTheDocument();
+        expect(screen.getByText("1")).toBeInTheDocument();
+    });
 
-    expect(cell).toBeInTheDocument();
+    it("Should renders Draws score.", () => {
+        render(<Scoreboard score={mockScore} />);
+
+        expect(screen.getByText("Draws")).toBeInTheDocument();
+        expect(screen.getByText("3")).toBeInTheDocument();
+    });
+
+    it("Should renders exactly 3 score tiles.", () => {
+        render(<Scoreboard score={mockScore} />);
+
+        const articles = screen.getAllByRole("article");
+        expect(articles).toHaveLength(3);
+    });
+
+    it("Should applies correct CSS classes for tones.", () => {
+        render(<Scoreboard score={mockScore} />);
+
+        expect(screen.getByText("Player X").closest("article"))
+        .toHaveClass("score-tile-x");
+
+        expect(screen.getByText("Player O").closest("article"))
+        .toHaveClass("score-tile-o");
+
+        expect(screen.getByText("Draws").closest("article"))
+        .toHaveClass("score-tile-draw");
+    });
 });
