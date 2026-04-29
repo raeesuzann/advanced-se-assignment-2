@@ -17,7 +17,7 @@ export default function Board({
             if (                     // Check if the squares in the current pattern are all occupied by the same player's mark
                 board[a] &&
                 board[a] === board[b] &&
-                board[a] === board[c]
+                board[a] === board[cc]
             ) {
                 winningSquares = [a, b, c];
             }
