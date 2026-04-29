@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Menu from "../../src/components/Menu";
 import userEvent from "@testing-library/user-event";
+import App from "../../src/App";
 
 describe("Menu", () => {
     it("Should render the main menu with title", () => {
@@ -28,7 +29,7 @@ describe("Menu", () => {
         expect(startLocal).toHaveBeenCalled();
     });
 
-    it("Should calls startLocal when clicked", async () => {
+    it("Should calls startCpu when clicked", async () => {
         const startCpu = vi.fn();
 
         render(<Menu startCpu={startCpu} />);
@@ -84,5 +85,17 @@ describe("Menu", () => {
         await buttonEvent.click(button)
 
         expect(toggleTheme).toHaveBeenCalled()
+    });
+
+    it("Should saves selected theme to localStorage", async () => {
+        const setItem = vi.spyOn(window.localStorage.__proto__, "setItem");
+
+        render(<App />);
+
+        const btn = screen.getByRole("button", {name: /day mode/i});
+        const user = userEvent.setup()
+        await user.click(btn)
+
+        expect(setItem).toHaveBeenCalledWith("theme", "light");
     });
 })
