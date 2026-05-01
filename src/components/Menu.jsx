@@ -1,3 +1,4 @@
+// pushing to github for merge request
 // Menu component renders the main menu of the tic-tac-toe game, allowing users to select game modes, adjust AI difficulty, and toggle themes
 export default function Menu({
     level,
@@ -9,11 +10,12 @@ export default function Menu({
 }) {
     // Define the available difficulty levels for the AI opponent, each with a corresponding label for display in the dropdown menu
     const levels = [
-        { value: 1, label: "Level 1 - Easy" },
+        { value: 0, label: "Level 1 - Easy" },
         { value: 2, label: "Level 2 - Normal" },
         { value: 3, label: "Level 3 - Medium" },
         { value: 4, label: "Level 4 - Hard" },
-        { value: 5, label: "Level 5 - Impossible" }
+        { value: 5, label: "Level 5 - Unbeatable" }
+
     ];
     // Render the main menu with options for game modes, AI difficulty selection, and theme toggling
     return (
