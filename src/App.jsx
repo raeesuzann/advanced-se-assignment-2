@@ -115,7 +115,7 @@ export default function App() {
       draw ||
       isCpuTurn
     ) {
-      eturn;
+      return;
     }
 
     // Create a new board array by copying the existing board state and updating the clicked square with the active player's mark. Then, update the board state 
