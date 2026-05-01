@@ -11,7 +11,8 @@ describe("App", () => {
 
         expect(heading).toBeInTheDocument();
     });
-        it("Should starts local game when clicking start local", async () => {
+    
+    it("Should starts local game when clicking start local", async () => {
         const user = userEvent.setup();
         render(<App />);
 
