@@ -29,8 +29,6 @@ export default function Square({
     );
 }
 
+//
 
-//{value ?? (  depends if we add to add numbers to the squares for accessibility or not
-//<span className="square-placeholder">
-//{index + 1}
-// </span>
+//{value} use this code if we dont like the placeholder numbers in the squares, it will show empty squares instead of numbers when they are not occupied by X or O
