@@ -43,7 +43,7 @@ describe("Board", () => {
 
         const squares = screen.getAllByTestId("square");
         const buttonClick = userEvent.setup()
-        await buttonClick.click(squares[3])     
+        await buttonClick.click(squares[3])
 
         expect(handleClick).toHaveBeenCalledWith(3);
     });
