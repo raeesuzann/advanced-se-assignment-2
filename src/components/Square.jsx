@@ -31,6 +31,7 @@ export default function Square({
     );
 }
 
+//
 
 //{value ?? (  depends if we add to add numbers to the squares for accessibility or not
 //<span className="square-placeholder">
