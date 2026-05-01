@@ -14,6 +14,8 @@ export default function Square({
             className={`square ${highlight ? "win" : ""} ${value ? value.toLowerCase() : ""}`}
             onClick={onClick}
             disabled={disabled}
+            data-testid="square"
+            data-highlight={highlight}
             aria-label={
                 value
                     ? `Square ${index + 1}, ${value}`
@@ -31,4 +33,7 @@ export default function Square({
 
 //
 
-//{value} use this code if we dont like the placeholder numbers in the squares, it will show empty squares instead of numbers when they are not occupied by X or O
+//{value ?? (  depends if we add to add numbers to the squares for accessibility or not
+//<span className="square-placeholder">
+//{index + 1}
+// </span>

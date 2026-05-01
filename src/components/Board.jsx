@@ -30,7 +30,7 @@ export default function Board({
             role="grid"
             aria-label="Tic Tac Toe board game"
         >
-            {board.map((cell, index) => (
+            {board?.map((cell, index) => (
                 <Square
                     key={index}
                     index={index}
