@@ -12,7 +12,7 @@ export function checkWinner(board) {
         if (
             board[a] &&
             board[a] === board[b] &&
-            board[a] === board[c]
+            
         ) {
             return board[a]; // Return the mark of the winning player (X or O)
         }
@@ -21,4 +21,4 @@ export function checkWinner(board) {
     return null; // If no winner is found, return null
 }
 
-export { patterns };
+export { patterns }; ///
