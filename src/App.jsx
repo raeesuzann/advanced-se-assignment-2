@@ -35,7 +35,14 @@ export default function App() {
     return window.localStorage.getItem("theme") || "dark";
   });
 
-
+  const scoredRoundRef = useRef(null);
+  const winner = checkWinner(board);
+  const draw = !winner && board.every((cell) => cell);
+  const activeMark = xTurn ? "X" : "O";
+  const levelLabel = difficultyLabels[level] ?? difficultyLabels[1];
+  const modeLabel = mode === "cpu" ? "Solo vs CPU" : "Local Duel";
+  const isCpuTurn = 
+    mode === "cpu" && !xTurn && !winner && !draw;
 
   // Use the useEffect hook to apply the selected theme to the document and store the user's theme preference in local storage whenever the theme state changes. 
   // This ensures that the theme is consistently applied across the application and remembered for future visits.
