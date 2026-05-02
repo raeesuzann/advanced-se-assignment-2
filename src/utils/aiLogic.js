@@ -1,133 +1,121 @@
 import {
-    checkWinner,
-    patterns
+  checkWinner,
+  WINNING_PATTERNS,
 } from "./gameLogic";
 
-// AI logic for tic-tac-toe, providing different levels of difficulty for the computer opponent
-function empty(board) {
-    return board
-        .map((cell, i) =>
-            cell === null ? i : null
-        )
-        .filter(i => i !== null);
-}
-// Function to select a random move from the available empty squares on the board
-function randomMove(board) {
-    const moves = empty(board);
-    return moves[   // Select a random index from the available moves array and return the corresponding move
-        Math.floor(Math.random() * moves.length)
-    ];
+function getEmptySquares(board) {
+  return board
+    .map((cell, index) => (cell === null ? index : null))
+    .filter((index) => index !== null);
 }
 
-// Function to find a winning move for the specified player, checking all winning patterns and returning the index of the move if found
+function getRandomMove(board) {
+  const moves = getEmptySquares(board);
+  return moves[Math.floor(Math.random() * moves.length)];
+}
+
 function findWinningMove(board, player) {
-    for (let [a, b, c] of patterns) {
-        const line = [board[a], board[b], board[c]];
-        const count =
-            line.filter(x => x === player).length;
-        const emptyIndex = line.indexOf(null);
+  for (const [a, b, c] of WINNING_PATTERNS) {
+    const line = [board[a], board[b], board[c]];
+    const playerCount = line.filter(
+      (cell) => cell === player
+    ).length;
+    const emptyIndex = line.indexOf(null);
 
-        // If there are two of the player's marks in the line and one empty square, return the index of the empty square as the winning move
-        if (count === 2 && emptyIndex !== -1) {
-            return [a, b, c][emptyIndex];
-        }
+    if (playerCount === 2 && emptyIndex !== -1) {
+      return [a, b, c][emptyIndex];
     }
-    // If no winning move is found, return null
-    return null;
+  }
+
+  return null;
 }
 
-// Main function to determine the computer's move based on the selected difficulty level, utilizing different strategies for each level of AI
 export function getComputerMove(board, level) {
-    switch (level) {
+  switch (level) {
+    case 1:
+      return getRandomMove(board);
 
-        // Level 1 - Easy: Random move selection from available squares
-        case 1:
-            return randomMove(board);
+    case 2:
+      return board[4] === null
+        ? 4
+        : getRandomMove(board);
 
-        // Level 2 - Normal: Prioritize the center square if available, otherwise select a random move
-        case 2:
-            return board[4] === null
-                ? 4
-                : randomMove(board);
+    case 3:
+      return (
+        findWinningMove(board, "O") ??
+        findWinningMove(board, "X") ??
+        getRandomMove(board)
+      );
 
-        // Level 3 - Medium: First check for a winning move for the computer, then check for a blocking move against the opponent, and if neither is found, select a random move
-        case 3:
-            return (
-                findWinningMove(board, "O") ??
-                findWinningMove(board, "X") ??
-                randomMove(board)
-            );
+    case 4:
+      return (
+        findWinningMove(board, "O") ??
+        findWinningMove(board, "X") ??
+        (board[4] === null ? 4 : null) ??
+        [0, 2, 6, 8].find(
+          (index) => board[index] === null
+        ) ??
+        getRandomMove(board)
+      );
 
-        // Level 4 - Hard: Prioritize winning moves, then blocking moves, then take the center if available, followed by corners, and finally random moves if no strategic options are available
-        case 4:
-            return (
-                findWinningMove(board, "O") ??
-                findWinningMove(board, "X") ??
-                (board[4] === null ? 4 : null) ??
-                [0, 2, 6, 8].find(i =>
-                    board[i] === null
-                ) ??
-                randomMove(board)
-            );
+    case 5:
+      return getMinimaxMove(board);
 
-        // Level 5 - Impossible: Use the minimax algorithm to evaluate all possible moves and select the optimal move for the computer opponent, ensuring that it never loses
-        case 5:
-            return minimaxMove(board);
-
-        default:
-            return randomMove(board);
-    }
+    default:
+      return getRandomMove(board);
+  }
 }
-// Minimax algorithm implementation for the highest difficulty level, evaluating all possible moves and their outcomes to select the optimal move for the computer opponent
-function minimaxMove(board) {
+
+function getMinimaxMove(board) {
+  let bestScore = -Infinity;
+  let bestMove = null;
+
+  for (const index of getEmptySquares(board)) {
+    board[index] = "O";
+    const score = minimax(board, false);
+    board[index] = null;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestMove = index;
+    }
+  }
+
+  return bestMove;
+}
+
+function minimax(board, isMaximizing) {
+  const winner = checkWinner(board);
+
+  if (winner === "O") return 1;
+  if (winner === "X") return -1;
+  if (board.every((cell) => cell)) return 0;
+
+  if (isMaximizing) {
     let bestScore = -Infinity;
-    let move = null;
 
-    // Iterate through all empty squares on the board, simulating a move for the computer and evaluating the resulting board state using the minimax function to determine the best possible move
-    for (let i of empty(board)) {
-        board[i] = "O";
-        let score = minimax(board, false);
-        board[i] = null;
-        // If the score for the simulated move is better than the best score found so far, update the best score and store the index of the move
-        if (score > bestScore) {
-            bestScore = score;
-            move = i;
-        }
+    for (const index of getEmptySquares(board)) {
+      board[index] = "O";
+      bestScore = Math.max(
+        bestScore,
+        minimax(board, false)
+      );
+      board[index] = null;
     }
 
-    return move;
-}
+    return bestScore;
+  }
 
-// Minimax function recursively evaluates the game tree, returning a score based on the outcome of the game for the computer opponent (O) and the human player (X), allowing the AI to make informed decisions based on potential future moves
-function minimax(board, isMax) {
-    const winner = checkWinner(board);
+  let bestScore = Infinity;
 
-    if (winner === "O") return 1;
-    if (winner === "X") return -1;
-    if (board.every(cell => cell)) return 0;
+  for (const index of getEmptySquares(board)) {
+    board[index] = "X";
+    bestScore = Math.min(
+      bestScore,
+      minimax(board, true)
+    );
+    board[index] = null;
+  }
 
-    // If the game is not over, recursively evaluate the game tree for both maximizing (computer) and minimizing (human) players, returning the best score for the current player
-    if (isMax) {
-        let best = -Infinity;
-
-        for (let i of empty(board)) {
-            board[i] = "O";
-            best = Math.max(best,
-                minimax(board, false));
-            board[i] = null;
-        }
-        // If it's the maximizing player's turn (the computer), return the best score found, which represents the most favorable outcome for the computer opponent
-        return best;
-    } else {
-        let best = Infinity;
-
-        for (let i of empty(board)) {
-            board[i] = "X";
-            best = Math.min(best,
-                minimax(board, true));
-            board[i] = null;
-        }
-        // If it's the minimizing player's turn (the human), return the best score found, which represents the least favorable outcome for the computer opponent, guiding the AI to avoid moves that would lead to a loss
-        return best;
-    }
+  return bestScore;
 }
