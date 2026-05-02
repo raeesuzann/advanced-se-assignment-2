@@ -127,6 +127,11 @@ export default function App() {
     setXTurn(!xTurn);
   }
 
+  // Function to reset the game board to its initial empty state and set the turn back to X, allowing players to start a new round while keeping the current score intact.
+  function resetBoard() {
+    setBoard(Array(9).fill(null));
+    setXTurn(true);
+  }
 
   // Function to perform a full reset of the game, which resets the board, clears the scores for both players and draws, and returns the user to the main menu for mode selection.
   function fullReset() {
