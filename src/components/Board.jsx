@@ -36,7 +36,7 @@ export default function Board({
                     index={index}
                     value={cell}
                     onClick={() => handleClick(index)}
-                    highlight={winningSquares.includes(index)}
+
                     disabled={boardLocked || Boolean(cell)}
                 />
             ))}
