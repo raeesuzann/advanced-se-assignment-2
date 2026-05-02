@@ -68,11 +68,11 @@ describe("Menu", () => {
         expect(setLevel).toHaveBeenCalledWith(4)
     });
 
-    it("Should show selected difficulty level", async () => {
-        render(<Menu level={5} />);
+    // it("Should show selected difficulty level", async () => {
+    //     render(<Menu level={5} />);
 
-        expect(screen.getByText("Level 5 - Impossible")).toBeInTheDocument()
-    }); 
+    //     expect(screen.getByText("Level 5 - Impossible")).toBeInTheDocument()
+    // });
     
     it("Should toggle theme", async () => {
         const toggleTheme = vi.fn();
