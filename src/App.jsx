@@ -18,7 +18,7 @@ const difficultyLabels = {
 // The component renders the appropriate interface based on the current game mode and provides interactive elements for gameplay and user experience.
 export default function App() {
   const [mode, setMode] = useState("menu");
-  const [level, setLevel] = useState(2);
+  const [level, setLevel] = useState(1);
   const [board, setBoard] = useState(Array(9).fill(null));
   const [xTurn, setXTurn] = useState(true);
   const [score, setScore] = useState({
