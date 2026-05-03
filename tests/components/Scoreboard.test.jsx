@@ -49,4 +49,5 @@ describe("Scoreboard", () => {
         expect(screen.getByText("Draws").closest("article"))
         .toHaveClass("score-tile-draw");
     });
+    
 });
