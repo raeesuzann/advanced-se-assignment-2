@@ -422,6 +422,29 @@ h1 {
 }
 
 /* Define styles for the scoreboard, which uses CSS grid to create a three-column layout with a gap between items. Each score tile is styled with padding, rounded corners, a border, and a background color for a visually appealing display of player scores or game statistics. The score label and value are styled for clarity, and specific color variants are defined for different score types (X, O, and draw) to differentiate them visually */
+.scoreboard-group {
+  display: grid;
+  gap: 12px;
+}
+
+.scoreboard-summary {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.scoreboard-summary.has-leader {
+  color: var(--text);
+}
+
+.scoreboard-summary.is-tied {
+  color: var(--accent-3);
+}
+
 .scoreboard {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -433,10 +456,38 @@ h1 {
   border-radius: 22px;
   border: 1px solid var(--border);
   background: var(--surface-strong);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.score-tile-leading {
+  transform: translateY(-2px);
+  border-color: rgba(88, 214, 255, 0.34);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.14);
+}
+
+.score-tile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .score-label {
   color: var(--muted);
+}
+
+.score-chip {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(88, 214, 255, 0.14);
+  color: var(--accent-2);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .score-value {
