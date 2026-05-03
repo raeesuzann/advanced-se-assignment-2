@@ -29,6 +29,7 @@ export default function Scoreboard({
             {items.map((item) => (
                 <article
                     key={item.label}
+                    data-testid={`score-${item.label}`}
                     className={`score-tile score-tile-${item.tone}`}
                 >
                     <span className="score-label">
