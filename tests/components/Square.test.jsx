@@ -2,6 +2,7 @@ import { screen } from "@testing-library/dom";
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import Square from "../../src/components/Square";
+import App from "../../src/App";
 
 describe("Square", () => {
     it("Should display square text", () => {
@@ -11,4 +12,5 @@ describe("Square", () => {
 
         expect(squares).toBeInTheDocument();
     });
+
 })
