@@ -1,3 +1,4 @@
+//pushing to github for merge request 
 // Square component representing each cell in the tic-tac-toe grid, displaying the current value (X or O) and handling user interactions
 export default function Square({
     index,
@@ -13,17 +14,24 @@ export default function Square({
             className={`square ${highlight ? "win" : ""} ${value ? value.toLowerCase() : ""}`}
             onClick={onClick}
             disabled={disabled}
+            data-testid="square"
+            data-highlight={highlight}
             aria-label={
                 value
                     ? `Square ${index + 1}, ${value}`
                     : `Square ${index + 1}, empty`
             }
         >
-            {value}
+            {value ?? (
+                <span className="square-placeholder">
+                    {index + 1}
+                </span>
+            )}
         </button>
     );
 }
 
+//
 
 //{value ?? (  depends if we add to add numbers to the squares for accessibility or not
 //<span className="square-placeholder">

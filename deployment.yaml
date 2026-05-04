@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vite-app
+  name: tic-tac-toe
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: tic-tac-toe
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       labels:
-        app: vite-app
+        app: tic-tac-toe
     spec:
       containers:
         - name: tic-tac-toe
