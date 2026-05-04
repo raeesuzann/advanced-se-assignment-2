@@ -338,7 +338,7 @@ h1 {
 }
 
 .select-control {
-  width: 100%;
+  width: 101%;
   padding: 14px 42px 14px 16px;
   border-radius: 18px;
   border: 1px solid var(--border);

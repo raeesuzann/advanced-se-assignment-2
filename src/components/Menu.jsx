@@ -10,7 +10,7 @@ export default function Menu({
 }) {
     // Define the available difficulty levels for the AI opponent, each with a corresponding label for display in the dropdown menu
     const levels = [
-        { value: 0, label: "Level 1 - Easy" },
+        { value: 1, label: "Level 1 - Easy" },
         { value: 2, label: "Level 2 - Normal" },
         { value: 3, label: "Level 3 - Medium" },
         { value: 4, label: "Level 4 - Hard" },
