@@ -21,4 +21,4 @@ export function checkWinner(board) {
     return null; // If no winner is found, return null
 }
 
-export { patterns };
+export { patterns }; ///

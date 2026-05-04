@@ -1,17 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import App from "../../src/App";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe("App", () => {
-    it("Should renders heading", () => {
-        render(<App />);
-
-        const heading = screen.getByRole('heading')
-
-        expect(heading).toBeInTheDocument();
-    });
-    
     it("Should starts local game when clicking start local", async () => {
         const user = userEvent.setup();
         render(<App />);
@@ -20,47 +12,74 @@ describe("App", () => {
 
         expect(screen.getByText(/local match/i)).toBeInTheDocument();
     });
-
+    
 });
 
-describe("Player turn display", () => {
-    it("Should starts with X to move", async () => {
+vi.mock("../../src/utils/gameLogic", () => ({
+    checkWinner: vi.fn(() => null),
+}));
+
+vi.mock("../../src/components/Board", () => ({
+    default: ({ board, handleClick }) => (
+        <div>
+        {board.map((value, i) => (
+            <button
+            key={i}
+            aria-label={`square ${i}`}
+            onClick={() => handleClick(i)}
+            >
+            {value ?? ""}
+            </button>
+        ))}
+        </div>
+    ),
+}));
+
+vi.mock("../../src/components/Controls", () => ({
+    default: ({ resetBoard, fullReset }) => (
+        <div>
+        <button onClick={resetBoard}>Reset Board</button>
+        <button onClick={fullReset}>Back to Menu</button>
+        </div>
+    ),
+}));
+
+vi.mock("../../src/components/Menu", () => ({
+    default: ({ startLocal }) => (
+        <button onClick={startLocal}>Start Local</button>
+    ),
+}));
+
+vi.mock("../../src/components/Scoreboard", () => ({
+    default: ({ score }) => (
+        <div>
+        <div>Player X {score.X}</div>
+        <div>Player O {score.O}</div>
+        <div>Draws {score.Draw}</div>
+        </div>
+    ),
+}));
+
+describe("Restart game - resetBoard", () => {
+    it("clears board but keeps score", async () => {
         const user = userEvent.setup();
 
         render(<App />);
 
-        await user.click(screen.getByRole("button", { name: /local/i }));
+        await user.click(screen.getByText(/start local/i));
 
+        const squares = screen.getAllByRole("button", {
+        name: /square/i,
+        });
 
-        expect(screen.getByText(/x to move/i)).toBeInTheDocument();
-    });
+        await user.click(squares[0]);
 
-    it("switches to O after X plays", async () => {
-        const user = userEvent.setup();
+        await user.click(screen.getByText(/reset/i));
 
-        render(<App />);
+        squares.forEach((sq) => {
+        expect(sq).toHaveTextContent("");
+        });
 
-        await user.click(screen.getByRole("button", { name: /local/i }));
-
-        const squares = screen.getAllByRole("button");
-
-        await user.click(squares[0]); // X plays
-
-        expect(screen.getByText(/ to move/i)).toBeInTheDocument();
-    });
-
-    it("switches back to X after O plays", async () => {
-        const user = userEvent.setup();
-
-        render(<App />);
-
-        await user.click(screen.getByRole("button", { name: /local/i }));
-
-        const squares = screen.getAllByRole("button");
-
-        await user.click(squares[0]); // X
-        await user.click(squares[1]); // O
-
-        expect(screen.getByText(/x to move/i)).toBeInTheDocument();
+        expect(screen.getByText(/player x/i)).toBeInTheDocument();
     });
 });

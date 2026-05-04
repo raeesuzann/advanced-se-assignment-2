@@ -1,3 +1,4 @@
+//pushing to github for merge request 
 // Square component representing each cell in the tic-tac-toe grid, displaying the current value (X or O) and handling user interactions
 export default function Square({
     index,
@@ -21,11 +22,16 @@ export default function Square({
                     : `Square ${index + 1}, empty`
             }
         >
-            {value}
+            {value ?? (
+                <span className="square-placeholder">
+                    {index + 1}
+                </span>
+            )}
         </button>
     );
 }
 
+//
 
 //{value ?? (  depends if we add to add numbers to the squares for accessibility or not
 //<span className="square-placeholder">
