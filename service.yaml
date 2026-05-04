@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tic-tac-toe-service
+spec:
+  type: LoadBalancer 
+  selector:
+    app: tic-tac-toe
+  ports:
+    - port: 80
+      targetPort: 80

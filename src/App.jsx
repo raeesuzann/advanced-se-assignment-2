@@ -41,7 +41,7 @@ export default function App() {
   const activeMark = xTurn ? "X" : "O";
   const levelLabel = difficultyLabels[level] ?? difficultyLabels[1];
   const modeLabel = mode === "cpu" ? "Solo vs CPU" : "Local Duel";
-  const isCpuTurn =
+  const isCpuTurn = 
     mode === "cpu" && !xTurn && !winner && !draw;
 
   // Use the useEffect hook to apply the selected theme to the document and store the user's theme preference in local storage whenever the theme state changes. 

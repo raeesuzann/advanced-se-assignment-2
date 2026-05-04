@@ -28,7 +28,7 @@ export default function Board({
         <div
             className={`board ${boardLocked ? "locked" : ""}`}
             role="grid"
-            aria-label="Tic Tac Toe board"
+            aria-label="Tic Tac Toe board game"
         >
             {board?.map((cell, index) => (
                 <Square

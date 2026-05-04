@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Scoreboard from "../../src/components/Scoreboard";
+import userEvent from "@testing-library/user-event";
+import App from "../../src/App";
 
 vi.mock("./utils/gameLogic", () => ({
     checkWinner: () => "X",
@@ -49,4 +51,23 @@ describe("Scoreboard", () => {
         expect(screen.getByText("Draws").closest("article"))
         .toHaveClass("score-tile-draw");
     });
+});
+
+describe("Draw detection", () => {
+it("Should increments draw score when board is full and no winner", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.click(screen.getByText(/start/i));
+
+    const squares = screen.getAllByRole("button");
+
+    for (let i = 0; i < 9; i++) {
+        await user.click(squares[i]);
+    }
+
+    expect(screen.getByText("Draws")).toBeInTheDocument();
+    expect(screen.getByText("1")).toBeInTheDocument();
+});
 });

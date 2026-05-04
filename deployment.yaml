@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tic-tac-toe
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tic-tac-toe
+  template:
+    metadata:
+      labels:
+        app: tic-tac-toe
+    spec:
+      containers:
+      - name: tic-tac-toe
+        image: tic-tac-toe:latest
+        imagePullPolicy: IfNotPresent
+        # Note: The pipeline will update this tag automatically
+        # image: your-docker-username/vite-app:latest
+        ports:
+        - containerPort: 80 
+        
