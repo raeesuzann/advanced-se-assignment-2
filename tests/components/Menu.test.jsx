@@ -70,7 +70,6 @@ describe("Menu", () => {
 
     // it("Should show selected difficulty level", async () => {
     //     render(<Menu level={5} />);
-
     //     expect(screen.getByText("Level 5 - Impossible")).toBeInTheDocument()
     // });
     
