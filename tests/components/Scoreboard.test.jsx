@@ -51,23 +51,24 @@ describe("Scoreboard", () => {
         expect(screen.getByText("Draws").closest("article"))
         .toHaveClass("score-tile-draw");
     });
+
 });
 
 describe("Draw detection", () => {
-it("Should increments draw score when board is full and no winner", async () => {
-    const user = userEvent.setup();
+    it("Should increments draw score when board is full and no winner", async () => {
+        const user = userEvent.setup();
 
-    render(<App />);
+        render(<App />);
 
-    await user.click(screen.getByText(/start/i));
+        await user.click(screen.getByText(/start/i));
 
-    const squares = screen.getAllByRole("button");
+        const squares = screen.getAllByRole("button");
 
-    for (let i = 0; i < 9; i++) {
-        await user.click(squares[i]);
-    }
+        for (let i = 0; i < 9; i++) {
+            await user.click(squares[i]);
+        }
 
-    expect(screen.getByText("Draws")).toBeInTheDocument();
-    expect(screen.getByText("1")).toBeInTheDocument();
-});
+        expect(screen.getByText("Draws")).toBeInTheDocument();
+        expect(screen.getByText("1")).toBeInTheDocument();
+    });
 });
