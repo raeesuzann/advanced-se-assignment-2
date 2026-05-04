@@ -1,46 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import App from "../../src/App";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-vi.mock("../../src/utils/gameLogic", () => ({
-    checkWinner: vi.fn(),
-}));
-
-vi.mock("../../src/utils/aiLogic", () => ({
-    getComputerMove: vi.fn(() => null),
-}));
-
-vi.mock("../../src/components/Board", () => ({
-    default: ({ board, handleClick, winner }) => (
-        <div>
-        {board.map((value, index) => {
-            // naive highlight: ALL squares highlighted when winner exists
-            const highlight = Boolean(winner);
-
-            return (
-            <button
-                key={index}
-                data-testid="square"
-                data-highlight={highlight}
-                onClick={() => handleClick(index)}
-            >
-                {value ?? ""}
-            </button>
-            );
-        })}
-        </div>
-    ),
-}));
-
-vi.mock("../../src/components/Menu", () => ({
-    default: ({ startLocal }) => (
-        <button onClick={startLocal}>Start Local</button>
-    ),
-}));
-
-
-import { checkWinner } from "../../src/utils/gameLogic";
 
 describe("App", () => {
     it("Should starts local game when clicking start local", async () => {
@@ -53,90 +14,82 @@ describe("App", () => {
     });
 
     it("Should highlights squares when there is a winner", async () => {
+        render(<App />);
         const user = userEvent.setup();
 
-        checkWinner.mockReturnValue("X");
-
-        render(<App />);
-
-        await user.click(screen.getByText(/start local/i));
-
-        const squares = screen.getAllByTestId("square");
-
-        const highlighted = squares.filter(
-            (sq) => sq.dataset.highlight === "true"
+        // start game
+        await user.click(
+            screen.getByRole('button', { name: /Local Multiplayer/i })
         );
 
-        expect(highlighted.length).toBeGreaterThan(0);
+        const squares = await screen.findAllByTestId('square');
+
+        // simulate real gameplay
+        await user.click(squares[0]);
+        await user.click(squares[3]);
+        await user.click(squares[1]);
+        await user.click(squares[4]);
+        await user.click(squares[2]);
+
+        // wait for UI update
+        await waitFor(() => {
+            const updatedSquares = screen.getAllByTestId('square');
+
+            const highlighted = updatedSquares.filter(sq =>
+            sq.classList.contains('win')
+            );
+
+            expect(highlighted.length).toBe(3); // winning line
+        });
     });
     
 });
 
-vi.mock("../../src/utils/gameLogic", () => ({
-    checkWinner: vi.fn(() => null),
-}));
-
-vi.mock("../../src/components/Board", () => ({
-    default: ({ board, handleClick }) => (
-        <div>
-        {board.map((value, i) => (
-            <button
-            key={i}
-            aria-label={`square ${i}`}
-            onClick={() => handleClick(i)}
-            >
-            {value ?? ""}
-            </button>
-        ))}
-        </div>
-    ),
-}));
-
-vi.mock("../../src/components/Controls", () => ({
-    default: ({ resetBoard, fullReset }) => (
-        <div>
-        <button onClick={resetBoard}>Reset Board</button>
-        <button onClick={fullReset}>Back to Menu</button>
-        </div>
-    ),
-}));
-
-vi.mock("../../src/components/Menu", () => ({
-    default: ({ startLocal }) => (
-        <button onClick={startLocal}>Start Local</button>
-    ),
-}));
-
-vi.mock("../../src/components/Scoreboard", () => ({
-    default: ({ score }) => (
-        <div>
-        <div>Player X {score.X}</div>
-        <div>Player O {score.O}</div>
-        <div>Draws {score.Draw}</div>
-        </div>
-    ),
-}));
-
 describe("Restart game - resetBoard", () => {
-    it("clears board but keeps score", async () => {
+    it("Should clears board and start next round", async () => {
         const user = userEvent.setup();
 
         render(<App />);
 
-        await user.click(screen.getByText(/start local/i));
+        await user.click(screen.getByText(/Local Multiplayer/i));
 
         const squares = screen.getAllByRole("button", {
-        name: /square/i,
+            name: /square/i,
         });
 
         await user.click(squares[0]);
 
-        await user.click(screen.getByText(/reset/i));
+        await user.click(screen.getByText(/Next Round/i));
 
-        squares.forEach((sq) => {
-        expect(sq).toHaveTextContent("");
+        const updatedSquares = screen.getAllByRole("button", {
+            name: /square/i,
+        });
+
+        updatedSquares.forEach((sq) => {
+            expect(sq).not.toHaveTextContent("X");
+            expect(sq).not.toHaveTextContent("O");
         });
 
         expect(screen.getByText(/player x/i)).toBeInTheDocument();
+    });
+
+    it("Should reset entire game and return to start screen", async () => {
+        const user = userEvent.setup();
+
+        render(<App />);
+
+        await user.click(screen.getByText(/Local Multiplayer/i));
+        const squares = screen.getAllByRole("button", {
+            name: /square/i,
+        });
+
+        await user.click(squares[0]);
+        await user.click(screen.getByText(/Main Menu/i));
+        expect(screen.getByText(/Local Multiplayer/i)).toBeInTheDocument();
+        const squaresAfterReset = screen.queryAllByRole("button", {
+            name: /square/i,
+        });
+
+        expect(squaresAfterReset.length).toBe(0);
     });
 });
