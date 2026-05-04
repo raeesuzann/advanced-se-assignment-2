@@ -43,17 +43,6 @@ vi.mock("../../src/components/Menu", () => ({
 import { checkWinner } from "../../src/utils/gameLogic";
 
 describe("App", () => {
-<<<<<<< HEAD
-    // it("Should renders heading", () => {
-    //     render(<App />);
-
-    //     const heading = screen.getByRole('heading')
-
-    //     expect(heading).toBeInTheDocument();
-    // });
-
-=======
->>>>>>> 3cf072073071502d5f91bb977d220d09fbb383eb
     it("Should starts local game when clicking start local", async () => {
         const user = userEvent.setup();
         render(<App />);
