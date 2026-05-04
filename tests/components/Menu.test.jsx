@@ -72,7 +72,11 @@ describe("Menu", () => {
     //     render(<Menu level={5} />);
 
     //     expect(screen.getByText("Level 5 - Impossible")).toBeInTheDocument()
+<<<<<<< HEAD
     // }); 
+=======
+    // });
+>>>>>>> 3cf072073071502d5f91bb977d220d09fbb383eb
     
     it("Should toggle theme", async () => {
         const toggleTheme = vi.fn();

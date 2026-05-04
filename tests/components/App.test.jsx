@@ -43,6 +43,7 @@ vi.mock("../../src/components/Menu", () => ({
 import { checkWinner } from "../../src/utils/gameLogic";
 
 describe("App", () => {
+<<<<<<< HEAD
     // it("Should renders heading", () => {
     //     render(<App />);
 
@@ -51,6 +52,8 @@ describe("App", () => {
     //     expect(heading).toBeInTheDocument();
     // });
 
+=======
+>>>>>>> 3cf072073071502d5f91bb977d220d09fbb383eb
     it("Should starts local game when clicking start local", async () => {
         const user = userEvent.setup();
         render(<App />);
@@ -78,4 +81,73 @@ describe("App", () => {
         expect(highlighted.length).toBeGreaterThan(0);
     });
     
+});
+
+vi.mock("../../src/utils/gameLogic", () => ({
+    checkWinner: vi.fn(() => null),
+}));
+
+vi.mock("../../src/components/Board", () => ({
+    default: ({ board, handleClick }) => (
+        <div>
+        {board.map((value, i) => (
+            <button
+            key={i}
+            aria-label={`square ${i}`}
+            onClick={() => handleClick(i)}
+            >
+            {value ?? ""}
+            </button>
+        ))}
+        </div>
+    ),
+}));
+
+vi.mock("../../src/components/Controls", () => ({
+    default: ({ resetBoard, fullReset }) => (
+        <div>
+        <button onClick={resetBoard}>Reset Board</button>
+        <button onClick={fullReset}>Back to Menu</button>
+        </div>
+    ),
+}));
+
+vi.mock("../../src/components/Menu", () => ({
+    default: ({ startLocal }) => (
+        <button onClick={startLocal}>Start Local</button>
+    ),
+}));
+
+vi.mock("../../src/components/Scoreboard", () => ({
+    default: ({ score }) => (
+        <div>
+        <div>Player X {score.X}</div>
+        <div>Player O {score.O}</div>
+        <div>Draws {score.Draw}</div>
+        </div>
+    ),
+}));
+
+describe("Restart game - resetBoard", () => {
+    it("clears board but keeps score", async () => {
+        const user = userEvent.setup();
+
+        render(<App />);
+
+        await user.click(screen.getByText(/start local/i));
+
+        const squares = screen.getAllByRole("button", {
+        name: /square/i,
+        });
+
+        await user.click(squares[0]);
+
+        await user.click(screen.getByText(/reset/i));
+
+        squares.forEach((sq) => {
+        expect(sq).toHaveTextContent("");
+        });
+
+        expect(screen.getByText(/player x/i)).toBeInTheDocument();
+    });
 });
