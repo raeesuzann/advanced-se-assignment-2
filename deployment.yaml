@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: tic-tac-toe
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: tic-tac-toe
