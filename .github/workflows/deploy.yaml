@@ -48,4 +48,4 @@ jobs:
           kubectl apply -f service.yaml
 
       - name: Verify Rollout
-        run: kubectl rollout status deployment/vite-app --timeout=120s
+        run: kubectl rollout status deployment/tic-tac-toe --timeout=120s
